@@ -11,7 +11,7 @@ class NeuralNetwork:
         output = self.weight * _input + self.bias
         return output
 
-    def predict(self, X: [float]) -> [float]:
+    def predict(self, X: list[float]) -> list[float]:
         Y_predicted = []
         for x in X:
             prediction = self.forward(x)
@@ -23,18 +23,18 @@ class NeuralNetwork:
         # In this example we used Mean Square Error (MSE)
         return (predicted_output - target) ** 2
 
-    def compute_total_loss(self, targets: [float], predicted_outputs: [float]) -> float:
+    def compute_total_loss(self, targets: list[float], predicted_outputs: list[float]) -> float:
         # In this example we used Mean Square Error (MSE)
         total_loss = 0
         for target, predicted_output in zip(targets, predicted_outputs):
             total_loss += (predicted_output - target) ** 2
 
-        return total_loss
+        return total_loss/len(targets)
 
     def compute_loss_derivative(self, predicted_output: float, target: float) -> float:
         return (predicted_output - target) * 2
 
-    def train(self, training_sample: [float], learning_rate=0.01, epochs=1000):
+    def train(self, training_sample: list[float], learning_rate=0.01, epochs=1000):
         for epoch in range(1, epochs + 1):
             total_loss = 0
 
@@ -44,8 +44,7 @@ class NeuralNetwork:
                 # print(_input, target, predicted_output)
 
                 # Calculate Loss
-                loss = self.compute_loss(predicted_output, target)
-                total_loss += loss
+                total_loss += self.compute_loss(predicted_output, target)
 
                 # Backward Pass (Calculate gradients)
                 loss_derivative_value = self.compute_loss_derivative(predicted_output, target)
